@@ -1,45 +1,85 @@
-// diagnostico.js
 const perguntas = {
     inicio: {
-        texto: "Você sente dor de cabeça?",
+        texto: "O clima está agradável?",
         opcoes: [
-            { emoji: "✅", resposta: "Sim", peso: 1, proxima: "febre" },
-            { emoji: "❌", resposta: "Não", peso: 0, proxima: "cansaco" }
+            { resposta: "😀", tipo: "positivo", proxima: "sono" },
+            { resposta: "😐", tipo: "neutro", proxima: "sono" },
+            { resposta: "😡", tipo: "negativo", proxima: "sono" }
         ]
     },
-    febre: {
-        texto: "Você está com febre?",
+    sono: {
+        texto: "Teve uma boa noite de sono?",
         opcoes: [
-            { emoji: "🤒", resposta: "Sim", peso: 2, proxima: "cansaco" },
-            { emoji: "❌", resposta: "Não", peso: 0, proxima: "cansaco" }
+            { resposta: "😀", tipo: "positivo", proxima: "dia" },
+            { resposta: "😐", tipo: "neutro", proxima: "dia" },
+            { resposta: "😡", tipo: "negativo", proxima: "dia" }
         ]
     },
-    cansaco: {
-        texto: "Você sente cansaço excessivo?",
+    dia: {
+        texto: "O seu dia está bem?",
         opcoes: [
-            { emoji: "😴", resposta: "Sim", peso: 1, proxima: "dorMuscular" },
-            { emoji: "❌", resposta: "Não", peso: 0, proxima: "dorMuscular" }
+            { resposta: "😀", tipo: "positivo", proxima: "produtividade" },
+            { resposta: "😐", tipo: "neutro", proxima: "produtividade" },
+            { resposta: "😡", tipo: "negativo", proxima: "produtividade" }
         ]
     },
-    dorMuscular: {
-        texto: "Você sente dores musculares?",
+    produtividade: {
+        texto: "Avalie o seu nível de produtividade de hoje.",
         opcoes: [
-            { emoji: "🤕", resposta: "Sim", peso: 1, proxima: "final" },
-            { emoji: "❌", resposta: "Não", peso: 0, proxima: "final" }
+            { resposta: "😀", tipo: "positivo", proxima: "superou" },
+            { resposta: "😐", tipo: "neutro", proxima: "superou" },
+            { resposta: "😡", tipo: "negativo", proxima: "superou" }
+        ]
+    },
+    superou: {
+        texto: "Algo na sua semana superou suas expectativas?",
+        opcoes: [
+            { resposta: "😀", tipo: "positivo", proxima: "atividades" },
+            { resposta: "😐", tipo: "neutro", proxima: "atividades" },
+            { resposta: "😡", tipo: "negativo", proxima: "atividades" }
+        ]
+    },
+    atividades: {
+        texto: "Gostaria de fazer atividades mais estimulantes?",
+        opcoes: [
+            { resposta: "😀", tipo: "positivo", proxima: "noticias" },
+            { resposta: "😐", tipo: "neutro", proxima: "noticias" },
+            { resposta: "😡", tipo: "negativo", proxima: "noticias" }
+        ]
+    },
+    noticias: {
+        texto: "Como se sente em relação às notícias da atualidade?",
+        opcoes: [
+            { resposta: "😀", tipo: "positivo", proxima: "estudos" },
+            { resposta: "😐", tipo: "neutro", proxima: "estudos" },
+            { resposta: "😡", tipo: "negativo", proxima: "estudos" }
+        ]
+    },
+    estudos: {
+        texto: "Você está aproveitando os seus estudos?",
+        opcoes: [
+            { resposta: "😀", tipo: "positivo", proxima: "gostou" },
+            { resposta: "😐", tipo: "neutro", proxima: "gostou" },
+            { resposta: "😡", tipo: "negativo", proxima: "gostou" }
+        ]
+    },
+    gostou: {
+        texto: "Você gostou de responder a avaliação?",
+        opcoes: [
+            { resposta: "😀", tipo: "positivo", proxima: "final" },
+            { resposta: "😐", tipo: "neutro", proxima: "final" },
+            { resposta: "😡", tipo: "negativo", proxima: "final" }
         ]
     },
     final: {
-        texto: "Analisando...",
-        opcoes: [] // nó final que aciona o resultado
+        texto: "Analisando seus resultados...",
+        opcoes: []
     }
 };
 
-let perguntaAtual = "inicio";
 let respostas = [];
-let pontuacao = 0;
 
 function mostrarPergunta(id) {
-    perguntaAtual = id;
     const pergunta = perguntas[id];
     const perguntaEl = document.getElementById("pergunta");
     const opcoesDiv = document.getElementById("opcoes");
@@ -47,70 +87,31 @@ function mostrarPergunta(id) {
     perguntaEl.textContent = pergunta.texto;
     opcoesDiv.innerHTML = "";
 
-    // se nó final, chama a exibição de resultado (função em resultado.js)
     if (!pergunta.opcoes || pergunta.opcoes.length === 0) {
-        // chama função definida em resultado.js
         if (typeof mostrarResultadoFinal === "function") {
-            mostrarResultadoFinal(respostas, pontuacao);
-        } else {
-            // fallback: mostrar apenas resumo se resultado.js não estiver carregado
-            mostrarResumoSimples();
+            mostrarResultadoFinal(respostas);
         }
         return;
     }
 
     pergunta.opcoes.forEach(opcao => {
         const btn = document.createElement("button");
-        btn.textContent = opcao.emoji;
-        btn.setAttribute("aria-label", opcao.resposta);
+        btn.textContent = opcao.resposta;
         btn.onclick = () => {
-            respostas.push({ pergunta: pergunta.texto, resposta: opcao.resposta, peso: opcao.peso || 0 });
-            pontuacao += Number(opcao.peso || 0);
-            // pequena pausa visual antes de trocar pergunta (ajuda a sentir a transição)
-            // você pode ajustar ou remover esse timeout
+            respostas.push({ pergunta: pergunta.texto, resposta: opcao.resposta, tipo: opcao.tipo });
             setTimeout(() => mostrarPergunta(opcao.proxima), 150);
         };
         opcoesDiv.appendChild(btn);
     });
 }
 
-// função pública para reiniciar o teste (chamada pelo resultado.js)
 function reiniciarTeste() {
     respostas = [];
-    pontuacao = 0;
-    perguntaAtual = "inicio";
-
-    // mantém o título no topo e reexibe o container (animação suave)
-    document.getElementById("titulo").classList.add("topo");
-    const quiz = document.getElementById("quizContainer");
-    quiz.classList.add("visivel");
-
-    // mostra a primeira pergunta
     mostrarPergunta("inicio");
 }
 
-// fallback simples (caso resultado.js não carregue)
-function mostrarResumoSimples() {
-    const opcoesDiv = document.getElementById("opcoes");
-    const perguntaEl = document.getElementById("pergunta");
-    perguntaEl.textContent = "Resumo:";
-    opcoesDiv.innerHTML = "";
-    respostas.forEach(r => {
-        const p = document.createElement("p");
-        p.textContent = `${r.pergunta} → ${r.resposta}`;
-        opcoesDiv.appendChild(p);
-    });
-}
-
-// inicia quando o usuário clica no título
 document.getElementById("titulo").addEventListener("click", () => {
-    const titulo = document.getElementById("titulo");
-    const quiz = document.getElementById("quizContainer");
-
-    titulo.classList.add("topo");
-
-    setTimeout(() => {
-        quiz.classList.add("visivel");
-        mostrarPergunta(perguntaAtual);
-    }, 600);
+    document.getElementById("titulo").classList.add("topo");
+    document.getElementById("quizContainer").classList.add("visivel");
+    mostrarPergunta("inicio");
 });
