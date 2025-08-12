@@ -22,14 +22,14 @@ function mostrarResultadoFinal(respostasArray) {
 
     if (maiorTipo === "positivo") {
         tituloDiag = "✅ Você está se sentindo bem!";
-        descricao = "Seus sintomas indicam que está tudo tranquilo.";
+        descricao = "Seu diagnóstico indicam que está tudo tranquilo.";
         gifUrl = "https://media1.tenor.com/m/ZdPqcQQW540AAAAd/off-to-work.gif"; // feliz
     } else if (maiorTipo === "neutro") {
-        tituloDiag = "⚠️ Monitoramento necessário.";
-        descricao = "Alguns sintomas podem merecer atenção.";
+        tituloDiag = "Você está imparcial";
+        descricao = "Redobre a sua atenção!";
         gifUrl = "https://media1.tenor.com/m/EybHr5ghLuIAAAAd/the-simspons-homer-walking-away.gif"; // neutro
     } else {
-        tituloDiag = "⚠️ Atenção: sintomas preocupantes.";
+        tituloDiag = "⚠️ Atenção: sinais preocupantes.";
         descricao = "Recomenda-se procurar um médico.";
         gifUrl = "https://media1.tenor.com/m/HY5DfnUpgZwAAAAd/seu-madruga-quebrando-tv.gif"; // triste
     }
@@ -50,8 +50,8 @@ function mostrarResultadoFinal(respostasArray) {
     const img = document.createElement("img");
     img.src = gifUrl;
     img.alt = maiorTipo;
-    img.style.width = "120px";
-    img.style.marginTop = "15px";
+    img.style.width = "300px";
+    img.style.marginTop = "5px";
     img.style.borderRadius = "15px";
     card.appendChild(img);
 
