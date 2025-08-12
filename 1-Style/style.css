@@ -1,0 +1,77 @@
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    transition: background 1s ease;
+}
+
+/* Título inicial */
+#titulo {
+    font-size: 3em;
+    font-weight: bold;
+    transition: all 1s ease;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: fadeIn 1.5s ease;
+}
+
+/* Quando começar o quiz */
+#titulo.topo {
+    top: 20px;
+    transform: translateY(0);
+    font-size: 2em;
+}
+
+/* Container das perguntas */
+.container {
+    opacity: 0;
+    transition: opacity 1s ease;
+    text-align: center;
+    max-width: 400px;
+    margin-top: 100px;
+}
+
+.container.visivel {
+    opacity: 1;
+    animation: slideUp 1s ease;
+}
+
+/* Botões */
+button {
+    padding: 15px 25px;
+    margin: 8px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #00f7d6;
+    transform: scale(1.1);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
