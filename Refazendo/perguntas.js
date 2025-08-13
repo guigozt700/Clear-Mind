@@ -6,6 +6,7 @@ document.getElementById("titulo").addEventListener("click", () => {
 
 let respostas = [] //Armazena as respostas
 
+// Array com todas as perguntas
 const perguntas = [
     { texto: "O clima está agradável?", opcoes: ["😀","😐","😡"], proxima: 1 },
     { texto: "Teve uma boa noite de sono?", opcoes: ["😀","😐","😡"], proxima: 2 },
@@ -15,10 +16,11 @@ const perguntas = [
     { texto: "Gostaria de fazer atividades mais estimulantes?", opcoes: ["😀","😐","😡"], proxima: 6 },
     { texto: "Como se sente em relação às notícias da atualidade?", opcoes: ["😀","😐","😡"], proxima: 7 },
     { texto: "Você está aproveitando os seus estudos?", opcoes: ["😀","😐","😡"], proxima: 8 },
-    { texto: "Você gostou de responder a avaliação?", opcoes: ["😀","😐","😡"], proxima: "final" },
-    {texto: "Analisando seus resultados...", opcoes: [] }
+    { texto: "Você gostou de responder a avaliação?", opcoes: ["😀","😐","😡"], proxima: 9 },
+    { texto: "Analisando seus resultados...", opcoes: ["✅ Ver resultado"], proxima: "final" } // Última pergunta agora tem um botão
 ]
 
+// Função para mostrar a pergunta na tela
 function mostrarPergunta(index){
     const pergunta = perguntas[index] //Acessa o index de cada objeto
     const perguntaEl = document.getElementById("pergunta")
@@ -33,10 +35,10 @@ function mostrarPergunta(index){
         btn.onclick = () =>{
             respostas.push(opcao) //Envia para o array a opcao selecionada
 
-            if (pergunta.proxima == "final"){ //Se a proxima pergunta for a ultima...
+            if (pergunta.proxima === "final"){ //Se a proxima pergunta for a ultima...
                 mostrarResultadoFinal()
             }
-            else // Se nao ele procura a próxima pergunra
+            else // Se não, vai para a próxima pergunta
             { 
                 mostrarPergunta(pergunta.proxima)
             }
@@ -45,38 +47,44 @@ function mostrarPergunta(index){
     })
 }
 
+// Função para mostrar o resultado final
 function mostrarResultadoFinal(){
-    const perguntaEl = document.getElementById("perguntas")
+    const perguntaEl = document.getElementById("pergunta")
     const opcoesDiv = document.getElementById("opcoes")
 
-    const {tituloDiag, descricao, gifUrl} = gerarDiagnostico(respostas)
+    const { tituloDiag, descricao, gifUrl } = gerarDiagnostico(respostas) //Recebe os dados do diagnóstico
 
     opcoesDiv.innerHTML = "" 
+    perguntaEl.textContent = "" //Limpa a pergunta
+
     const card = document.createElement("div") //Cria uma div
     card.className = "resultado-card" //Dou um name para essa div
 
+    // Título do diagnóstico
     const h = document.createElement("h2")
     h.textContent = tituloDiag //Vai receber o texto do diagnostico
-    card.appendChild(p) //Crio um elemento filho (p)
+    card.appendChild(h)
 
+    // Descrição
     const p = document.createElement("p")
     p.textContent = descricao //Vai receber a descrição do diagnostico
     card.appendChild(p)
 
+    // Imagem/GIF
     const img = document.createElement("img")
     img.src = gifUrl
     img.alt = tituloDiag
     img.style.width = "300px" //Estilo do gif
-    card.appendChild(p)
+    card.appendChild(img)
 
     opcoesDiv.appendChild(card)
 
-    //Botão pra refazer o teste
+    // Botão pra refazer o teste
     const btnRefazer = document.createElement("button")
     btnRefazer.textContent = "🔄 Refazer teste"
-
     btnRefazer.onclick = () =>{ 
-        respostas = [] //Zera o array e chama a função que reinicia o teste
-        mostrarPergunta(0)
+        respostas = [] //Zera o array
+        mostrarPergunta(0) //Volta para a primeira pergunta
     }
+    opcoesDiv.appendChild(btnRefazer)
 }
