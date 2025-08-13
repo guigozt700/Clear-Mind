@@ -1,0 +1,81 @@
+// script.js
+let respostas = [];
+const perguntas = [
+    { texto: "O clima está agradável?", opcoes: ["😀", "😐", "😡"], proxima: "sono" },
+    { texto: "Teve uma boa noite de sono?", opcoes: ["😀", "😐", "😡"], proxima: "dia" },
+    { texto: "O seu dia está bem?", opcoes: ["😀", "😐", "😡"], proxima: "produtividade" },
+    { texto: "Avalie o seu nível de produtividade de hoje.", opcoes: ["😀", "😐", "😡"], proxima: "superou" },
+    { texto: "Algo na sua semana superou suas expectativas?", opcoes: ["😀", "😐", "😡"], proxima: "atividades" },
+    { texto: "Gostaria de fazer atividades mais estimulantes?", opcoes: ["😀", "😐", "😡"], proxima: "noticias" },
+    { texto: "Como se sente em relação às notícias da atualidade?", opcoes: ["😀", "😐", "😡"], proxima: "estudos" },
+    { texto: "Você está aproveitando os seus estudos?", opcoes: ["😀", "😐", "😡"], proxima: "gostou" },
+    { texto: "Você gostou de responder a avaliação?", opcoes: ["😀", "😐", "😡"], proxima: "final" },
+    { texto: "Analisando seus resultados...", opcoes: [] }
+];
+
+function mostrarPergunta(index) {
+    const pergunta = perguntas[index];
+    const perguntaEl = document.getElementById("pergunta");
+    const opcoesDiv = document.getElementById("opcoes");
+
+    perguntaEl.textContent = pergunta.texto;
+    opcoesDiv.innerHTML = "";
+
+    // Mostrar as opções de resposta
+    pergunta.opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.textContent = opcao;
+        btn.onclick = () => {
+            respostas.push(opcao);
+            if (pergunta.proxima === "final") {
+                mostrarResultadoFinal();
+            } else {
+                mostrarPergunta(perguntas.findIndex(p => p.proxima === pergunta.proxima));
+            }
+        };
+        opcoesDiv.appendChild(btn);
+    });
+}
+
+function mostrarResultadoFinal() {
+    const opcoesDiv = document.getElementById("opcoes");
+    const perguntaEl = document.getElementById("pergunta");
+
+    // Chama a função de diagnóstico importada
+    const { tituloDiag, descricao, gifUrl } = gerarDiagnostico(respostas);
+
+    opcoesDiv.innerHTML = "";
+    const card = document.createElement("div");
+    card.className = "resultado-card";
+
+    const h = document.createElement("h2");
+    h.textContent = tituloDiag;
+    card.appendChild(h);
+
+    const p = document.createElement("p");
+    p.textContent = descricao;
+    card.appendChild(p);
+
+    const img = document.createElement("img");
+    img.src = gifUrl;
+    img.alt = tituloDiag;
+    img.style.width = "300px";
+    card.appendChild(img);
+
+    opcoesDiv.appendChild(card);
+
+    // Botão para refazer o teste
+    const btnRefazer = document.createElement("button");
+    btnRefazer.textContent = "🔄 Refazer teste";
+    btnRefazer.onclick = () => {
+        respostas = [];
+        mostrarPergunta(0); // Começa novamente do início
+    };
+    opcoesDiv.appendChild(btnRefazer);
+}
+
+// Inicia o quiz ao clicar no título
+document.getElementById("titulo").addEventListener("click", () => {
+    document.getElementById("quizContainer").classList.add("visivel");
+    mostrarPergunta(0); // Começa com a primeira pergunta
+});
