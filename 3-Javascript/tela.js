@@ -1,69 +1,51 @@
-function mostrarResultadoFinal(respostasArray) {
-    const opcoesDiv = document.getElementById("opcoes");
-    const perguntaEl = document.getElementById("pergunta");
+// Função para gerar o diagnóstico com base nas respostas
+function gerarDiagnostico(respostas){
+    const contagem = {positivo:0, neutro:0, negativo:0} //Dicionario pra contabilizar as respostas
 
-    perguntaEl.textContent = "";
-
-    // Contagem dos tipos de resposta
-    const contagem = { positivo: 0, neutro: 0, negativo: 0 };
-    respostasArray.forEach(r => {
-        if (contagem[r.tipo] !== undefined) contagem[r.tipo]++;
+    //Contabilização das respostas
+    respostas.forEach(resposta => {
+        if (resposta === "😀"){
+            contagem.positivo++ //Vai contabilizar os positivos
+        }
+        else if (resposta === "😐"){
+            contagem.neutro++ //Vai contabilizar os neutros
+        }
+        else if (resposta === "😡"){
+            contagem.negativo++ //Vai contabilizar os negativos
+        }
     });
 
-    // Determinar qual tipo prevalece
-    let maiorTipo = "positivo";
-    if (contagem.negativo >= contagem.positivo && contagem.negativo >= contagem.neutro) maiorTipo = "negativo";
-    else if (contagem.neutro >= contagem.positivo && contagem.neutro >= contagem.negativo) maiorTipo = "neutro";
-
-    // Definir diagnóstico e gif conforme tipo
-    let tituloDiag = "";
-    let descricao = "";
-    let gifUrl = "";
-
-    if (maiorTipo === "positivo") {
-        tituloDiag = "✅ Você está se sentindo bem!";
-        descricao = "Seu diagnóstico indicam que está tudo tranquilo.";
-        gifUrl = "https://media1.tenor.com/m/ZdPqcQQW540AAAAd/off-to-work.gif"; // feliz
-    } else if (maiorTipo === "neutro") {
-        tituloDiag = "Você está imparcial";
-        descricao = "Redobre a sua atenção!";
-        gifUrl = "https://media1.tenor.com/m/EybHr5ghLuIAAAAd/the-simspons-homer-walking-away.gif"; // neutro
-    } else {
-        tituloDiag = "⚠️ Atenção: sinais preocupantes.";
-        descricao = "Recomenda-se procurar um médico.";
-        gifUrl = "https://media1.tenor.com/m/HY5DfnUpgZwAAAAd/seu-madruga-quebrando-tv.gif"; // triste
+    //Verificação do resultado
+    let resultado = "positivo"
+    if (contagem.negativo >= contagem.positivo && contagem.negativo >= contagem.neutro){
+        resultado = "negativo"
+    }
+    else if (contagem.neutro >= contagem.positivo){
+        resultado = "neutro"
     }
 
-    // Limpa e cria o card com resultado
-    opcoesDiv.innerHTML = "";
-    const card = document.createElement("div");
-    card.className = "resultado-card";
+    //Definição das variaveis para imprimir o resultado
+    let tituloDiag = ""
+    let descricao = ""
+    let gifUrl = ""
 
-    const h = document.createElement("h2");
-    h.textContent = tituloDiag;
-    card.appendChild(h);
+    //Exibição final
+    if (resultado === "positivo"){
+        tituloDiag = "✅ Você está se sentindo bem!"
+        descricao = "Tudo tranquilo!"
+        gifUrl = "https://media1.tenor.com/m/ZdPqcQQW540AAAAd/off-to-work.gif"
+    }
+    else if (resultado === "neutro"){
+        tituloDiag = "Você está imparcial"
+        descricao = "Talvez seja hora de refletir um pouco"
+        gifUrl = "https://media1.tenor.com/m/EybHr5ghLuIAAAAd/the-simspons-homer-walking-away.gif"
+    }
+    else{
+        tituloDiag = "⚠️ Atenção: sinais preocupantes" 
+        descricao = "Recomenda-se procurar um médico"
+        gifUrl = "https://media1.tenor.com/m/HY5DfnUpgZwAAAAd/seu-madruga-quebrando-tv.gif"
+    }
 
-    const p = document.createElement("p");
-    p.textContent = descricao;
-    card.appendChild(p);
-
-    const img = document.createElement("img");
-    img.src = gifUrl;
-    img.alt = maiorTipo;
-    img.style.width = "300px";
-    img.style.marginTop = "5px";
-    img.style.borderRadius = "15px";
-    card.appendChild(img);
-
-    opcoesDiv.appendChild(card);
-
-    // Botão para refazer o teste
-    const btnRefazer = document.createElement("button");
-    btnRefazer.textContent = "🔄 Refazer teste";
-    btnRefazer.style.marginTop = "30px";
-    btnRefazer.onclick = () => {
-        if (typeof reiniciarTeste === "function") reiniciarTeste();
-        else location.reload();
-    };
-    opcoesDiv.appendChild(btnRefazer);
+    //Retorna um objeto com os dados
+    return { tituloDiag, descricao, gifUrl }
 }
