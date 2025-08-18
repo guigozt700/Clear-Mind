@@ -17,3 +17,5 @@
 <p align="left">👤Hugo Oliveira<br>👤Paulo Roberto<br>👤Caroline Mendes<br>👤Priscila Mendes<br>👤Guilherme Gomes<br>👤Gabriel Gutierres</p>
 
 ###
+
+![Diagnostico-Print](/2-Imagem/Diagnostico-Print.png)
