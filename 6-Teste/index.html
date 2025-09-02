@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz com Roleta</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body, html {
+        height: 100%;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: linear-gradient(135deg, #f8f9fc, #e6ecf5);
+        color: #333;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Quiz */
+    #quizContainer {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        max-width: 500px;
+        width: 100%;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #pergunta {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+    #opcoes button {
+        margin: 10px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 12px;
+        background: #4a90e2;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    #opcoes button:hover {
+        background: #357ABD;
+    }
+
+    /* Resultado */
+    #resultadoContainer {
+        display: none;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        opacity: 0;
+        transition: all 1s ease;
+    }
+    #resultadoContainer.show {
+        display: flex;
+        opacity: 1;
+    }
+
+    /* Roleta */
+    .slot-machine {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        transform: translateX(0);
+        transition: transform 1s ease;
+    }
+    .slot-machine.move-left {
+        transform: translateX(-150px);
+    }
+
+    .slot-window {
+        width: 200px;
+        height: 200px;
+        border: 4px solid #333;
+        border-radius: 15px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fafafa;
+    }
+    .slot-window img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .lever {
+        margin-top: 15px;
+        width: 50px;
+        height: 100px;
+        background: #ccc;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+    }
+    .lever::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+        position: absolute;
+        top: -25px;
+        left: 15px;
+    }
+
+    /* Diagnóstico */
+    .diagnostico {
+        max-width: 400px;
+        background: white;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1s ease;
+    }
+    .diagnostico.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Quiz -->
+    <div id="quizContainer">
+        <h2 id="pergunta"></h2>
+        <div id="opcoes"></div>
+    </div>
+
+    <!-- Resultado -->
+    <div id="resultadoContainer">
+        <div class="slot-machine" id="slotMachine">
+            <div class="slot-window">
+                <img id="slotImage" src="https://images.mubicdn.net/images/cast_member/59516/cache-348885-1529633278/image-w856.jpg?size=800x" alt="?">
+            </div>
+            <div class="lever" id="lever"></div>
+        </div>
+        <div class="diagnostico" id="diagnosticoContainer"></div>
+    </div>
+</div>
+
+<script>
+let respostas = [];
+
+// Perguntas
+const perguntas = [
+    { texto: "O clima está agradável?", opcoes: ["😀","😐","😡"], proxima: 1 },
+    { texto: "Teve uma boa noite de sono?", opcoes: ["😀","😐","😡"], proxima: 2 },
+    { texto: "O seu dia está bem?", opcoes: ["😀","😐","😡"], proxima: 3 },
+    { texto: "Avalie sua produtividade de hoje.", opcoes: ["😀","😐","😡"], proxima: 4 },
+    { texto: "Gostou da avaliação?", opcoes: ["😀","😐","😡"], proxima: "final" }
+];
+
+// Imagens
+const imagens = {
+    "?": "https://images.mubicdn.net/images/cast_member/59516/cache-348885-1529633278/image-w856.jpg?size=800x",
+    positivo: "https://allaboutsmiles.us/wp-content/uploads/2022/03/All-About-Smiles-SERVICES-THUMB-6-600x440.jpg",
+    neutro: "https://thumbs.dreamstime.com/b/homem-com-express%C3%A3o-neutra-53831400.jpg",
+    negativo: "https://sa1s3optim.patientpop.com/assets/images/provider/photos/2601650.jpg"
+};
+
+// Mostrar pergunta
+function mostrarPergunta(index){
+    const pergunta = perguntas[index];
+    const perguntaEl = document.getElementById("pergunta");
+    const opcoesDiv = document.getElementById("opcoes");
+
+    perguntaEl.textContent = pergunta.texto;
+    opcoesDiv.innerHTML = "";
+
+    pergunta.opcoes.forEach(opcao =>{
+        const btn = document.createElement("button");
+        btn.textContent = opcao;
+        btn.onclick = ()=>{
+            respostas.push(opcao);
+
+            if(pergunta.proxima === "final"){
+                mostrarResultadoFinal();
+            } else {
+                mostrarPergunta(pergunta.proxima);
+            }
+        };
+        opcoesDiv.appendChild(btn);
+    });
+}
+
+// Diagnóstico
+function gerarDiagnostico(respostas){
+    const positivos = respostas.filter(r=>r==="😀").length;
+    const neutros = respostas.filter(r=>r==="😐").length;
+    const negativos = respostas.filter(r=>r==="😡").length;
+
+    if(positivos >= neutros && positivos >= negativos){
+        return { tituloDiag: "Diagnóstico Positivo", descricao: "Você está se sentindo muito bem!", imagem: imagens.positivo };
+    } else if(neutros >= positivos && neutros >= negativos){
+        return { tituloDiag: "Diagnóstico Neutro", descricao: "Você está em um estado equilibrado.", imagem: imagens.neutro };
+    } else {
+        return { tituloDiag: "Diagnóstico Negativo", descricao: "Você não está em um bom momento.", imagem: imagens.negativo };
+    }
+}
+
+// Mostrar resultado
+function mostrarResultadoFinal(){
+    document.getElementById("quizContainer").style.display = "none";
+    const resultadoContainer = document.getElementById("resultadoContainer");
+    resultadoContainer.classList.add("show");
+
+    const { tituloDiag, descricao, imagem } = gerarDiagnostico(respostas);
+
+    // Aciona alavanca para revelar diagnóstico
+    const lever = document.getElementById("lever");
+    const slotImage = document.getElementById("slotImage");
+    const slotMachine = document.getElementById("slotMachine");
+    const diagnosticoContainer = document.getElementById("diagnosticoContainer");
+
+    let imagemRevelada = false;
+
+    lever.addEventListener("click", ()=>{
+        if(imagemRevelada) return;
+
+        let contador = 0;
+        const intervalo = setInterval(()=>{
+            const imgs = [imagens.positivo, imagens.neutro, imagens.negativo];
+            slotImage.src = imgs[contador % imgs.length];
+            contador++;
+        }, 100);
+
+        setTimeout(()=>{
+            clearInterval(intervalo);
+            slotImage.src = imagem;
+            imagemRevelada = true;
+
+            // Move roleta para esquerda e mostra diagnóstico
+            slotMachine.classList.add("move-left");
+            diagnosticoContainer.innerHTML = `
+                <h2>${tituloDiag}</h2>
+                <p>${descricao}</p>
+            `;
+            diagnosticoContainer.classList.add("show");
+        }, 2000);
+    });
+}
+
+mostrarPergunta(0);
+</script>
+</body>
+</html>
