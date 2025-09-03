@@ -66,7 +66,7 @@ body {
 
 /* Resultado */
 #resultadoContainer {
-    display: none;
+    display: none; /* esconde inicialmente */
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -75,22 +75,23 @@ body {
     transition: all 1s ease;
 }
 #resultadoContainer.show {
-    display: flex;
+    display: flex; /* mostra quando o quiz terminar */
     opacity: 1;
 }
 
-/* Roleta */
+
 .slot-machine {
+    position: relative; /* necessário para posicionar a alavanca absoluta */
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    background: #e0f0ff; /* azul claro */
+    background: #e0f0ff; /* fundo branco da roleta */
     padding: 20px;
     border-radius: 25px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-    transform: translateX(0);
+    width: 260px; /* ajusta ao tamanho da roleta */
     transition: transform 1s ease;
 }
+
 .slot-machine.move-left {
     transform: translateX(-180px);
 }
@@ -103,9 +104,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #cce6ff;
+    background: #fff;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
+
 .slot-window img {
     width: 100%;
     height: 100%;
@@ -113,13 +115,14 @@ body {
     border-radius: 15px;
 }
 
+/* alavanca do lado direito dentro do mesmo fundo */
 .lever {
-    margin-top: 20px;
+    position: absolute;
+    right: -40px; /* ajusta a posição para “encostar” na lateral da roleta */
     width: 50px;
     height: 120px;
     background: linear-gradient(180deg, #0099ff, #005bbb);
     border-radius: 12px;
-    position: relative;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -134,6 +137,12 @@ body {
     left: 15px;
     box-shadow: 0 0 10px #00f7ff;
 }
+
+/* animação ao apertar */
+.lever.active {
+    transform: rotate(30deg);
+}
+
 
 /* Diagnóstico */
 .diagnostico {
