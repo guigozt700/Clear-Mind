@@ -1,109 +1,170 @@
-body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+* {
+    box-sizing: border-box;
     margin: 0;
-    overflow: hidden;
-    transition: background 1s ease;
+    padding: 0;
 }
 
-/* Título inicial */
-#titulo {
-    font-size: 3em;
-    font-weight: bold;
-    transition: all 1s ease;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: fadeIn 1.5s ease;
-    cursor: pointer;
+body, html {
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* tons de azul */
+    color: #fff;
 }
 
-/* Quando começar o quiz */
-#titulo.topo {
-    top: 20px;
-    transform: translateY(0);
-    font-size: 2em;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Container das perguntas */
 .container {
-    opacity: 0;
-    transition: opacity 1s ease;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Quiz */
+#quizContainer {
     text-align: center;
-    max-width: 400px;
-    margin-top: 100px;
-}
-
-.container.visivel {
-    opacity: 1;
-    animation: slideUp 1s ease;
-}
-
-/* Botões */
-button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 40px;
     border-radius: 25px;
-    padding: 15px 25px;
-    margin: 8px;
-    cursor: pointer;
+    max-width: 500px;
+    width: 100%;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#pergunta {
+    font-size: 2rem;
+    margin-bottom: 40px;
     font-weight: bold;
-    font-size: 2em;
-    color: #f0f0f0;
-    transition: all 0.3s ease;
-    display: inline-flex;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Opções com emojis grandes */
+#opcoes {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+#opcoes button {
+    background: transparent;
+    border: none;
+    font-size: 4rem; /* emojis grandes */
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+#opcoes button:hover {
+    transform: scale(1.3) rotate(-5deg);
+    filter: drop-shadow(0 0 15px #00d4ff);
+}
+
+/* Resultado */
+#resultadoContainer {
+    display: none; /* esconde inicialmente */
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 60px;
+    opacity: 0;
+    transition: all 1s ease;
+}
+#resultadoContainer.show {
+    display: flex; /* mostra quando o quiz terminar */
+    opacity: 1;
 }
 
-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #00f7d6;
-    transform: scale(1.1);
-}
 
-button img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 12px;
-    margin-right: 10px;
-}
-
-/* Animações */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Resultado final */
-.resultado-card {
-    border: 1px solid transparent;
+.slot-machine {
+    position: relative; /* necessário para posicionar a alavanca absoluta */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e0f0ff; /* fundo branco da roleta */
     padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    text-align: center;
-    color: #f0f0f0;
-    font-weight: 600;
+    border-radius: 25px;
+    width: 260px; /* ajusta ao tamanho da roleta */
+    transition: transform 1s ease;
 }
 
-.resumo-list p {
-    margin: 6px 0;
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.02);
-    border-radius: 10px;
-    font-size: 0.95rem;
+.slot-machine.move-left {
+    transform: translateX(-180px);
+}
+
+.slot-window {
+    width: 220px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.slot-window img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* alavanca do lado direito dentro do mesmo fundo */
+.lever {
+    position: absolute;
+    right: -40px; /* ajusta a posição para “encostar” na lateral da roleta */
+    width: 50px;
+    height: 120px;
+    background: linear-gradient(180deg, #0099ff, #005bbb);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.lever::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #00f7ff;
+    border-radius: 50%;
+    position: absolute;
+    top: -25px;
+    left: 15px;
+    box-shadow: 0 0 10px #00f7ff;
+}
+
+/* animação ao apertar */
+.lever.active {
+    transform: rotate(30deg);
+}
+
+
+/* Diagnóstico */
+.diagnostico {
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 25px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+    text-align: center;
+}
+.diagnostico.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.diagnostico h2 {
+    color: #00d4ff;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.diagnostico p {
+    font-size: 1.2rem;
 }
