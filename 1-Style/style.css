@@ -143,7 +143,6 @@ body {
     transform: rotate(30deg);
 }
 
-
 /* Diagnóstico */
 .diagnostico {
     max-width: 400px;
@@ -167,4 +166,23 @@ body {
 
 .diagnostico p {
     font-size: 1.2rem;
+}
+
+.reset-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: #00d4ff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+    background-color: #2b72dc;
+}
+
+.botao-container {
+    margin-top: 50px; /* separação do diagnóstico */
 }

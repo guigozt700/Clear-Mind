@@ -34,20 +34,40 @@ function mostrarResultadoFinal(){
             contador++;
         }, 100);
 
-        setTimeout(()=>{
-            clearInterval(intervalo);
-            slotImage.src = finalImage;
-            imagemRevelada = true;
+    setTimeout(() => {
+        clearInterval(intervalo);
+        slotImage.src = finalImage;
+        imagemRevelada = true;
 
-            // Move roleta e mostra diagnóstico
-            slotMachine.classList.add("move-left");
-            diagnosticoContainer.innerHTML = `
-                <h2>${resultado.titulo}</h2>
-                <p>${resultado.descricao}</p>
-            `;
-            diagnosticoContainer.classList.add("show");
+        // Move roleta e mostra diagnóstico
+        slotMachine.classList.add("move-left");
+        diagnosticoContainer.innerHTML = `
+            <h2>${resultado.titulo}</h2>
+            <p>${resultado.descricao}</p>
+        `;
+        diagnosticoContainer.classList.add("show");
 
+        // --- Botão "Fazer outro diagnóstico" ---
+        const botaoContainer = document.createElement("div");
+        botaoContainer.classList.add("botao-container"); // container para estilizar
+        const botaoReset = document.createElement("button");
+        botaoReset.textContent = "Fazer outro diagnóstico";
+        botaoReset.classList.add("reset-btn"); 
+        botaoContainer.appendChild(botaoReset);
+        diagnosticoContainer.appendChild(botaoContainer);
+
+        botaoReset.onclick = () => {
+            respostas = [];
+            document.getElementById("resultadoContainer").style.display = "none";
+            diagnosticoContainer.innerHTML = "";
+            slotMachine.classList.remove("move-left");
             lever.classList.remove("active");
-        }, 2000);
+            document.getElementById("quizContainer").style.display = "block";
+            mostrarPergunta(0);
+        };
+
+        lever.classList.remove("active");
+    }, 2000);
+
     });
 }
