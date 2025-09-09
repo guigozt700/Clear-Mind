@@ -1,0 +1,23 @@
+{
+  "name": "ferramenta-diagnostico",
+  "version": "1.0.0",
+  "description": "Ferramenta de Diagnóstico com ChatGPT",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node 4--Bacl/server.js",
+    "dev": "nodemon 4-Back/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
