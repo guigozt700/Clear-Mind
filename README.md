@@ -36,6 +36,25 @@
 
 ###
 
-![Diagnostico-Print](/2-Imagem/Diagnostico-Print.png)
+<h2>Como utilizar o projeto</h2>
+<p>Passo 1: clonar a branch da versão que deseja utilizar</p>
+<p>-> git clone -b "nome da branch" https://github.com/guigozt700/Ferramenta-Diagnostico.git</p>
 
 ###
+
+<p>Passo 2: Criar uma chave de API no site: https://openrouter.ai/settings/provisioning-keys</p>
+
+###
+
+<p>Passo 3: Copiar o código da chave em um arquivo ".env" na variavel "OPENROUTER_API_KEY"</p>
+<p> -> OPENROUTER_API_KEY = "código da chave"</p>
+
+###
+
+<p>Passo 4: Rodar no terminal os comandos:</p>
+<p>-> npm install</p>
+<p>-> npm run dev
+
+###
+
+<p>Passo 5: Abrir o arquivo index.html
