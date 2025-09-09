@@ -6,6 +6,7 @@
 <h2>Descrição</h2>
 <p>Uma ferramenta interativa que simula um diagnóstico leve e simbólico do seu estado emocional e cotidiano. Através de perguntas simples sobre humor, produtividade e percepção pessoal, a aplicação fornece um resultado ilustrado com base nas suas respostas.
 </p>
+<p>Feito uma dinâmica em lab com aprendizado ágil em metodologia imersiva prática</p>
 
 <h2>Técnologia utilzadas</h2>
 
