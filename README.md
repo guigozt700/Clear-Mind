@@ -39,7 +39,7 @@
 <h2>Como utilizar o projeto</h2>
 <p>Passo 1: clonar a branch da versão que deseja utilizar</p>
 <p>-> git clone -b "nome da branch" https://github.com/guigozt700/Ferramenta-Diagnostico.git</p>
-<p>Caso clone a branch "versão1" não é preciso seguir os passos seguintes, o passo 5 </p> 
+<p>Caso clone a branch "versão1" não é preciso seguir os passos seguintes, apenas o passo 5 </p> 
 
 ###
 
