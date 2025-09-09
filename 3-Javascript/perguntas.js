@@ -19,7 +19,7 @@ function mostrarPergunta(index){
     pergunta.opcoes.forEach(opcao => {
         const btn = document.createElement("button");
         btn.textContent = opcao;
-        btn.onclick = ()=>{
+        btn.onclick = ()=> {
             respostas.push(opcao);
             if(pergunta.proxima === "final"){
                 mostrarResultadoFinal();
