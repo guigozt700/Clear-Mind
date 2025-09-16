@@ -35,6 +35,9 @@ async function mostrarResultadoFinal() {
         const imagens = [
             "https://allaboutsmiles.us/wp-content/uploads/2022/03/All-About-Smiles-SERVICES-THUMB-6-600x440.jpg",
             "https://thumbs.dreamstime.com/b/homem-com-express%C3%A3o-neutra-53831400.jpg",
+            "https://tse2.mm.bing.net/th/id/OIP.inIS8V_jMsW6-D_YjI5Z-AHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+            "https://t3.ftcdn.net/jpg/05/16/39/52/360_F_516395245_DuyNoZcXpF4eN2hdyUcIOMYqaqTRXBbR.jpg",
+            "https://img.freepik.com/fotos-premium/isso-e-um-sucesso-homem-alegre-e-positivo-cerrando-os-punhos-enquanto-celebra-seu-sucesso_259150-28428.jpg",
             "https://sa1s3optim.patientpop.com/assets/images/provider/photos/2601650.jpg"
         ];
 
