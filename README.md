@@ -1,4 +1,4 @@
-<h1 align="left">Ferramenta de Diagnóstico</h1>
+<h1 align="left">Clear Mind</h1>
 <h1>Versão 2 - Branch2</h1>
 
 ###
@@ -40,7 +40,7 @@
 
 <h2>Como utilizar o projeto</h2>
 <p>Passo 1: clonar a branch da versão que deseja utilizar</p>
-<p>-> git clone -b "nome da branch" https://github.com/guigozt700/Ferramenta-Diagnostico.git</p>
+<p>-> git clone -b "nome da branch" https://github.com/guigozt700/Clear-Mind.git</p>
 
 ###
 
