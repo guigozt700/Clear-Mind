@@ -1,4 +1,4 @@
-<h1 align="left">Ferramenta de Diagnóstico</h1>
+<h1 align="left">Clear Mind</h1>
 
 ###
 
